@@ -29,7 +29,7 @@
 #
 #  rjpearce https://github.com/rjpearce
 #
-class opendkim(
+class opendkim (
   $default_config  = $opendkim::params::default_config,
   $ensure_version  = $opendkim::params::ensure_version,
   $syslog          = $opendkim::params::syslog,

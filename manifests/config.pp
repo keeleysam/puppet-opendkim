@@ -29,6 +29,7 @@ class opendkim::config(
   $umask                   = $::opendkim::umask,
   $oversignheaders         = $::opendkim::oversignheaders,
   $internalhosts           = $::opendkim::internalhosts,
+  $service                 = $::opendkim::service,
 ){
 
   file { '/etc/dkim':
@@ -38,41 +39,22 @@ class opendkim::config(
     mode   => '0644';
   }
 
-  concat { ['/etc/opendkim.conf', '/etc/default/opendkim', '/etc/opendkim_keytable.conf', '/etc/opendkim_signingtable.conf']:
-    owner  => root,
-    group  => root,
-    mode   => '0644',
-    notify => Service[$opendkim::params::service],
+  file { '/etc/opendkim.conf':
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('opendkim/opendkim.conf.erb'),
+    notify  => Service[$service],
   }
-  concat::fragment {
-    'opendkim config header':
-      target  => '/etc/opendkim.conf',
-      content => "###### MANAGED BY PUPPET\n",
-      order   => 01;
 
-    'opendkim config':
-      target  => '/etc/opendkim.conf',
-      content => template('opendkim/opendkim.conf.erb'),
-      order   => 02;
-
-    'opendkim default config header':
-      target  => '/etc/default/opendkim',
-      content => "###### MANAGED BY PUPPET\n",
-      order   => 01;
-
-    'opendkim default config':
-      target  => '/etc/default/opendkim',
-      content => template('opendkim/opendkim_default.erb'),
-      order   => 02;
-
-    'opendkim keytable header':
-      target  => '/etc/opendkim_keytable.conf',
-      content => "###### MANAGED BY PUPPET\n",
-      order   => 01;
-
-    'opendkim signing table header':
-      target  => '/etc/opendkim_signingtable.conf',
-      content => "###### MANAGED BY PUPPET\n",
-      order   => 01;
+  file { '/etc/default/opendkim':
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('opendkim/opendkim_default.erb'),
+    notify  => Service[$service],
   }
+
 }

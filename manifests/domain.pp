@@ -34,14 +34,16 @@ define opendkim::domain(
   $key_folder  = '/etc/dkim',
   $signing_key = $name,
   $user        = $::opendkim::user,
+  $service     = $::opendkim::service,
 ) {
   $key_file = "${key_folder}/$selector-${domain}.key"
 
   file { $key_file:
-      owner  => $user,
-      group  => 'root',
-      mode   => 0600,
-      source => $private_key;
+    owner  => $user,
+    group  => 'root',
+    mode   => '0600',
+    source => $private_key,
+    notify => Service[$service],
   }
 
   # Add keytable and signing table to config, but only once
@@ -57,12 +59,15 @@ define opendkim::domain(
     content => "${signing_key} ${selector}._domainkey.${domain}\n",
     order   => 10,
     require => File[$key_file],
+    notify  => Service[$service],
+
   }
   concat::fragment{ "keytable_${name}":
     target  => '/etc/opendkim_keytable.conf',
     content => "${selector}._domainkey.${domain} ${domain}:${selector}:$key_file\n",
     order   => 10,
     require => File[$key_file],
+    notify  => Service[$service],
   }
 }
 
