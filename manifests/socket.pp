@@ -44,11 +44,11 @@
 #
 #
 define opendkim::socket(
-  $type='inet',
-  $file='/var/run/opendkim/opendkim.sock',
-  $interface=false,
-  $port=8891,
-  $name=''
+  $type      = 'inet',
+  $file      = '/var/run/opendkim/opendkim.sock',
+  $interface = false,
+  $port      = '8891',
+  $service   = $::opendkim::service,
 ) {
 
   case $type {
@@ -65,10 +65,15 @@ define opendkim::socket(
       fail("Unsupported type: ${type}\n")
     }
   }
-  concat::fragment{ $socket:
-    target  => '/etc/default/opendkim',
-    content => "SOCKET=${socket} # ${name}\n",
-    order   => 10;
+
+  file { '/etc/default/opendkim':
+    ensure  => file,
+    owner   => root,
+    group   => root,
+    mode    => '0644',
+    content => template('opendkim/opendkim_default.erb'),
+    notify  => Service[$service],
   }
+
 }
 

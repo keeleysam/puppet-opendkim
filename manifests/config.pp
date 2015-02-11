@@ -48,13 +48,4 @@ class opendkim::config(
     notify  => Service[$service],
   }
 
-  file { '/etc/default/opendkim':
-    ensure  => file,
-    owner   => root,
-    group   => root,
-    mode    => '0644',
-    content => template('opendkim/opendkim_default.erb'),
-    notify  => Service[$service],
-  }
-
 }
