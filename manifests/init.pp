@@ -42,21 +42,10 @@ class opendkim(
   $user            = $opendkim::params::user,
 ) inherits ::opendkim::params {
 
-  package { $opendkim::params::package:
-    ensure => $ensure_version,
-    alias  => 'opendkim'
-  }
-  service { $opendkim::params::service:
-    enable  => true,
-    require => Package['opendkim'];
-  }
-  file { '/etc/dkim':
-    ensure => 'directory',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0644';
-  }
-  if ($default_config) {
-    include opendkim::config
-  }
+  class{'opendkim::install': } ->
+  class{'opendkim::config': } ->
+  class{'opendkim::socket': } ->
+  class{'opendkim::domain': } ->
+  class{'opendkim::service': } ->
+  Class['opendkim']
 }

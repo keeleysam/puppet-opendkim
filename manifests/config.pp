@@ -31,6 +31,13 @@ class opendkim::config(
   $internalhosts           = $::opendkim::internalhosts,
 ){
 
+  file { '/etc/dkim':
+    ensure => 'directory',
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644';
+  }
+
   concat { ['/etc/opendkim.conf', '/etc/default/opendkim', '/etc/opendkim_keytable.conf', '/etc/opendkim_signingtable.conf']:
     owner  => root,
     group  => root,
