@@ -30,6 +30,8 @@ class opendkim::config(
   $oversignheaders         = $::opendkim::oversignheaders,
   $internalhosts           = $::opendkim::internalhosts,
   $service                 = $::opendkim::service,
+  $keytable                = $::opendkim::keytable,
+  $signingtable            = $::opendkim::signingtable,
 ){
 
   file { '/etc/dkim':

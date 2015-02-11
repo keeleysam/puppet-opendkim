@@ -48,6 +48,8 @@ class opendkim::params {
   $umask           = '002'
   $oversignheaders = 'From'
   $internalhosts   = ''
+  $keytable        = '/etc/opendkim_keytable.conf'
+  $signingtable    = '/etc/opendkim_signingtable.conf'
 
   case $::operatingsystem {
     'Ubuntu', 'Debian': {

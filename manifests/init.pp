@@ -40,6 +40,8 @@ class opendkim (
   $package         = $opendkim::params::package,
   $service         = $opendkim::params::service,
   $user            = $opendkim::params::user,
+  $keytable        = $opendkim::params::keytable,
+  $signingtable    = $opendkim::params::signingtable,
 ) inherits ::opendkim::params {
 
   class{'opendkim::install': } ->

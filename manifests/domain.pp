@@ -45,15 +45,7 @@ define opendkim::domain(
     source => $private_key,
     notify => Service[$service],
   }
-
-  # Add keytable and signing table to config, but only once
-  if( ! defined( Concat::Fragment['opendkim_domain_config'] ) ) {
-    concat::fragment{ 'opendkim_domain_config':
-      target  => '/etc/opendkim.conf',
-      content => "Keytable /etc/opendkim_keytable.conf\nSigningTable /etc/opendkim_signingtable.conf\n\n",
-    }
-  }
-
+  
   concat::fragment{ "signingtable_${name}":
     target  => '/etc/opendkim_signingtable.conf',
     content => "${signing_key} ${selector}._domainkey.${domain}\n",
