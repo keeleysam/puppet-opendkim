@@ -41,11 +41,13 @@
 #
 #
 class opendkim::params {
-  $syslog = 'yes'
-  $syslog_success = 'false'
-  $umask  = '002'
+  $default_config  = true
+  $ensure_version  = 'installed'
+  $syslog          = 'yes'
+  $syslog_success  = 'false'
+  $umask           = '002'
   $oversignheaders = 'From'
-  $internalhosts = ''
+  $internalhosts   = ''
 
   case $::operatingsystem {
     'Ubuntu', 'Debian': {

@@ -30,8 +30,16 @@
 #  rjpearce https://github.com/rjpearce
 #
 class opendkim(
-  $default_config = true,
-  $ensure_version = 'installed'
+  $default_config  = $opendkim::params::default_config,
+  $ensure_version  = $opendkim::params::ensure_version,
+  $syslog          = $opendkim::params::syslog,
+  $syslog_success  = $opendkim::params::syslog_success,
+  $umask           = $opendkim::params::umask,
+  $oversignheaders = $opendkim::params::oversignheaders,
+  $internalhosts   = $opendkim::params::internalhosts,
+  $package         = $opendkim::params::package,
+  $service         = $opendkim::params::service,
+  $user            = $opendkim::params::user,
 ) inherits ::opendkim::params {
 
   package { $opendkim::params::package:

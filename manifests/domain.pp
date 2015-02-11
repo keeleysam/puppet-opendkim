@@ -33,7 +33,7 @@ define opendkim::domain(
   $selector    = 'mail',
   $key_folder  = '/etc/dkim',
   $signing_key = $name,
-  $user        = $opendkim::params::user,
+  $user        = $::opendkim::user,
 ) {
   $key_file = "${key_folder}/$selector-${domain}.key"
 

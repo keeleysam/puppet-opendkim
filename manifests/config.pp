@@ -24,12 +24,12 @@
 
 
 class opendkim::config(
-  $syslog                  = $opendkim::params::syslog,
-  $syslog_success          = $opendkim::params::syslog_success,
-  $umask                   = $opendkim::params::umask,
-  $oversignheaders         = $opendkim::params::oversignheaders,
-  $internalhosts           = $opendkim::params::internalhosts,
-) inherits ::opendkim::params {
+  $syslog                  = $::opendkim::syslog,
+  $syslog_success          = $::opendkim::syslog_success,
+  $umask                   = $::opendkim::umask,
+  $oversignheaders         = $::opendkim::oversignheaders,
+  $internalhosts           = $::opendkim::internalhosts,
+){
 
   concat { ['/etc/opendkim.conf', '/etc/default/opendkim', '/etc/opendkim_keytable.conf', '/etc/opendkim_signingtable.conf']:
     owner  => root,
