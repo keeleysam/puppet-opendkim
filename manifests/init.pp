@@ -44,8 +44,6 @@ class opendkim (
 
   class{'opendkim::install': } ->
   class{'opendkim::config': } ->
-  class{'opendkim::socket': } ->
-  class{'opendkim::domain': } ->
   class{'opendkim::service': } ->
   Class['opendkim']
 }
