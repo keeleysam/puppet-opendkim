@@ -47,7 +47,8 @@ define opendkim::socket(
   $type='inet',
   $file='/var/run/opendkim/opendkim.sock',
   $interface=false,
-  $port=8891
+  $port=8891,
+  $name=''
 ) {
 
   case $type {
