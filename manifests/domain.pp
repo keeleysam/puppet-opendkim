@@ -29,14 +29,17 @@
 
 define opendkim::domain(
   $private_key,
-  $domain      = $name,
-  $selector    = 'mail',
-  $key_folder  = '/etc/dkim',
-  $signing_key = $name,
-  $user        = $::opendkim::user,
-  $service     = $::opendkim::service,
+  $domain       = $name,
+  $selector     = 'mail',
+  $key_folder   = '/etc/dkim',
+  $signing_key  = $name,
+  $user         = $::opendkim::user,
+  $service      = $::opendkim::service,
+  $keytable     = $::opendkim::keytable,
+  $signingtable = $::opendkim::signingtable,
+
 ) {
-  $key_file = "${key_folder}/$selector-${domain}.key"
+  $key_file = "${key_folder}/${selector}-${domain}.key"
 
   file { $key_file:
     owner  => $user,
@@ -45,9 +48,12 @@ define opendkim::domain(
     source => $private_key,
     notify => Service[$service],
   }
-  
+
+  concat { $signingtable : }
+  concat { $keytable : }
+
   concat::fragment{ "signingtable_${name}":
-    target  => '/etc/opendkim_signingtable.conf',
+    target  => $signingtable,
     content => "${signing_key} ${selector}._domainkey.${domain}\n",
     order   => 10,
     require => File[$key_file],
@@ -55,8 +61,8 @@ define opendkim::domain(
 
   }
   concat::fragment{ "keytable_${name}":
-    target  => '/etc/opendkim_keytable.conf',
-    content => "${selector}._domainkey.${domain} ${domain}:${selector}:$key_file\n",
+    target  => $keytable,
+    content => "${selector}._domainkey.${domain} ${domain}:${selector}:${key_file}\n",
     order   => 10,
     require => File[$key_file],
     notify  => Service[$service],
