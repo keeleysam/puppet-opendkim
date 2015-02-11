@@ -32,4 +32,5 @@
 
 # Sign for example.com with key in /etc/mail/dkim.key using
 # selector '2007' (e.g. 2007._domainkey.example.com)
-
+ 
+<% if @internalhosts -%>InternalHosts <%= @internalhosts %><% end -%>

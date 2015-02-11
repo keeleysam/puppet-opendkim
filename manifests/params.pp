@@ -45,6 +45,7 @@ class opendkim::params {
   $syslog_success = 'false'
   $umask  = '002'
   $oversignheaders = 'From'
+  $internalhosts = ''
 
   case $::operatingsystem {
     'Ubuntu', 'Debian': {
