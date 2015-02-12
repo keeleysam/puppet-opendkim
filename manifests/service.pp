@@ -2,11 +2,13 @@
 
 class opendkim::service(
   $service                 = $::opendkim::service,
+  $package                 = $::opendkim::package,
 ){
 
   service { $service :
     enable  => true,
-    require => Package['opendkim'];
+    ensure  => running,
+    require => Package[$package];
   }
 
 }
